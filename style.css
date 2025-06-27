@@ -247,7 +247,7 @@ main {
     box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
 }
 
-.submit-btn, .next-btn, .retry-btn {
+.view-answer-btn, .next-btn, .retry-btn {
     background: #28a745;
     color: white;
     border: none;
@@ -261,7 +261,7 @@ main {
     font-weight: 500;
 }
 
-.submit-btn:hover, .next-btn:hover, .retry-btn:hover {
+.view-answer-btn:hover, .next-btn:hover, .retry-btn:hover {
     background: #218838;
     transform: translateY(-2px);
 }

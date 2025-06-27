@@ -18,7 +18,7 @@ class QuizApp {
         this.chapterTitle = document.getElementById('chapter-title');
         this.questionText = document.getElementById('question-text');
         this.userAnswer = document.getElementById('user-answer');
-        this.submitBtn = document.getElementById('submit-btn');
+        this.submitBtn = document.getElementById('view-answer-btn');
         this.nextQuestionBtn = document.getElementById('next-question-btn');
         this.retryQuestionBtn = document.getElementById('retry-question-btn');
         this.backBtn = document.getElementById('back-btn');
@@ -281,11 +281,6 @@ class QuizApp {
     submitAnswer() {
         const userInput = this.userAnswer.value.trim();
         
-        if (!userInput) {
-            alert('请输入答案后再提交！');
-            return;
-        }
-        
         // 显示参考答案
         this.correctAnswer.textContent = this.currentQuestion.answer;
         this.answerDisplay.classList.remove('hidden');
@@ -337,7 +332,7 @@ class QuizApp {
         } else {
             restartBtn.textContent = '重新开始本章';
         }
-        restartBtn.className = 'submit-btn';
+        restartBtn.className = 'view-answer-btn';
         restartBtn.onclick = () => {
             this.usedQuestions.clear();
             this.userAnswer.style.display = 'block';
