@@ -14,6 +14,7 @@ class QuizApp {
         // 获取DOM元素
         this.chapterSelection = document.getElementById('chapter-selection');
         this.questionSection = document.getElementById('question-section');
+        this.allQuestionsSection = document.getElementById('all-questions-section');
         this.chapterTitle = document.getElementById('chapter-title');
         this.questionText = document.getElementById('question-text');
         this.userAnswer = document.getElementById('user-answer');
@@ -21,9 +22,13 @@ class QuizApp {
         this.nextQuestionBtn = document.getElementById('next-question-btn');
         this.retryQuestionBtn = document.getElementById('retry-question-btn');
         this.backBtn = document.getElementById('back-btn');
+        this.backFromAllBtn = document.getElementById('back-from-all-btn');
         this.answerDisplay = document.getElementById('answer-display');
         this.correctAnswer = document.getElementById('correct-answer');
-        this.randomBtn = document.getElementById('random-question-btn'); // 新增
+        this.randomBtn = document.getElementById('random-question-btn');
+        this.viewAllBtn = document.getElementById('view-all-btn');
+        this.allQuestionsContent = document.getElementById('all-questions-content');
+        this.tocContent = document.getElementById('toc-content');
         
         // 获取所有章节按钮
         this.chapterBtns = document.querySelectorAll('.chapter-btn');
@@ -43,6 +48,11 @@ class QuizApp {
             this.startRandomMode();
         });
         
+        // 查看所有题目按钮事件
+        this.viewAllBtn.addEventListener('click', () => {
+            this.showAllQuestions();
+        });
+        
         // 提交答案事件
         this.submitBtn.addEventListener('click', () => {
             this.submitAnswer();
@@ -60,6 +70,11 @@ class QuizApp {
         
         // 返回按钮事件
         this.backBtn.addEventListener('click', () => {
+            this.backToChapterSelection();
+        });
+        
+        // 从所有题目界面返回按钮事件
+        this.backFromAllBtn.addEventListener('click', () => {
             this.backToChapterSelection();
         });
         
@@ -101,6 +116,102 @@ class QuizApp {
         
         // 显示随机题目
         this.showRandomQuestion();
+    }
+    
+    // 新增：显示所有题目和答案
+    showAllQuestions() {
+        this.chapterSelection.classList.add('hidden');
+        this.questionSection.classList.add('hidden');
+        this.allQuestionsSection.classList.remove('hidden');
+        
+        // 生成所有题目内容
+        this.generateAllQuestionsContent();
+        this.generateTableOfContents();
+    }
+    
+    generateTableOfContents() {
+        let tocHTML = '';
+        
+        // 遍历所有章节生成目录
+        Object.keys(questionsData).forEach(chapterKey => {
+            const chapterData = questionsData[chapterKey];
+            const chapterId = `chapter-${chapterKey.replace(/第|章/g, '')}`;
+            
+            tocHTML += `
+                <a href="#${chapterId}" class="toc-item" data-chapter-id="${chapterId}">
+                    ${chapterKey} ${chapterData.title}
+                </a>
+            `;
+        });
+        
+        this.tocContent.innerHTML = tocHTML;
+        
+        // 为目录项添加点击事件
+        this.tocContent.querySelectorAll('.toc-item').forEach(item => {
+            item.addEventListener('click', (e) => {
+                e.preventDefault();
+                const chapterId = e.target.dataset.chapterId;
+                this.scrollToChapter(chapterId);
+            });
+        });
+    }
+    
+    scrollToChapter(chapterId) {
+        const targetElement = document.getElementById(chapterId);
+        if (targetElement) {
+            targetElement.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+            
+            // 添加高亮效果
+            targetElement.style.transition = 'all 0.3s ease';
+            targetElement.style.transform = 'scale(1.02)';
+            targetElement.style.boxShadow = '0 8px 25px rgba(102, 126, 234, 0.4)';
+            
+            // 3秒后移除高亮效果
+            setTimeout(() => {
+                targetElement.style.transform = 'scale(1)';
+                targetElement.style.boxShadow = '0 4px 6px rgba(0, 0, 0, 0.1)';
+            }, 3000);
+        }
+    }
+    
+    generateAllQuestionsContent() {
+        let contentHTML = '';
+        
+        // 遍历所有章节
+        Object.keys(questionsData).forEach(chapterKey => {
+            const chapterData = questionsData[chapterKey];
+            const chapterId = `chapter-${chapterKey.replace(/第|章/g, '')}`;
+            
+            contentHTML += `
+                <div class="chapter-section" id="${chapterId}">
+                    <h3 class="chapter-header">${chapterKey} ${chapterData.title}</h3>
+                    <div class="questions-list">
+            `;
+            
+            // 遍历章节中的所有题目
+            chapterData.questions.forEach((question, index) => {
+                contentHTML += `
+                    <div class="question-item">
+                        <h4 class="question-title">题目 ${index + 1}：</h4>
+                        <div class="question-content">
+                            <p><strong>问题：</strong>${question.question}</p>
+                            <div class="answer-title">参考答案：</div>
+                            <div class="answer-content">${question.answer}</div>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            contentHTML += `
+                    </div>
+                </div>
+            `;
+        });
+        
+        this.allQuestionsContent.innerHTML = contentHTML;
     }
     
     showQuestionSection() {
@@ -195,7 +306,7 @@ class QuizApp {
     
     retryCurrentQuestion() {
         // 重置当前题目的状态，允许用户重新答题
-        this.userAnswer.value = '';
+        // 保留用户之前的输入内容，不清空
         this.userAnswer.disabled = false;
         this.submitBtn.classList.remove('hidden');
         this.nextQuestionBtn.classList.add('hidden');
@@ -239,6 +350,7 @@ class QuizApp {
     
     backToChapterSelection() {
         this.questionSection.classList.add('hidden');
+        this.allQuestionsSection.classList.add('hidden');
         this.chapterSelection.classList.remove('hidden');
         this.currentChapter = null;
         this.currentQuestion = null;
