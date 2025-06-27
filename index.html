@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>毛概题目练习</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>毛泽东思想和中国特色社会主义理论体系概论</h1>
+            <p>章节练习系统</p>
+        </header>
+
+        <main>
+            <!-- 章节选择界面 -->
+            <div id="chapter-selection" class="section">
+                <h2>选择章节</h2>
+                
+                <!-- 随机题目按钮 -->
+                <div class="random-section">
+                    <button id="random-question-btn" class="random-btn">🎲 随机题目练习</button>
+                    <p class="random-desc">从所有章节中随机抽取题目进行练习</p>
+                </div>
+                
+                <div class="chapter-grid">
+                    <button class="chapter-btn" data-chapter="第一章">第一章 毛泽东思想</button>
+                    <button class="chapter-btn" data-chapter="第二章">第二章 新民主主义革命理论</button>
+                    <button class="chapter-btn" data-chapter="第三章">第三章 社会主义改造理论</button>
+                    <button class="chapter-btn" data-chapter="第四章">第四章 社会主义建设道路的初步探索</button>
+                    <button class="chapter-btn" data-chapter="第五章">第五章 中国特色社会主义理论体系概述</button>
+                    <button class="chapter-btn" data-chapter="第六章">第六章 邓小平理论</button>
+                    <button class="chapter-btn" data-chapter="第七章">第七章 "三个代表"重要思想</button>
+                    <button class="chapter-btn" data-chapter="第八章">第八章 科学发展观</button>
+                </div>
+            </div>
+
+            <!-- 题目界面 -->
+            <div id="question-section" class="section hidden">
+                <div class="question-header">
+                    <button id="back-btn" class="back-btn">← 返回章节选择</button>
+                    <h2 id="chapter-title"></h2>
+                </div>
+                
+                <div class="question-card">
+                    <h3>题目：</h3>
+                    <p id="question-text"></p>
+                    
+                    <div class="answer-area">
+                        <label for="user-answer">请输入你的答案：</label>
+                        <textarea id="user-answer" placeholder="在这里输入你的答案..."></textarea>
+                        
+                        <button id="submit-btn" class="submit-btn">提交答案</button>
+                        <button id="next-question-btn" class="next-btn hidden">下一题</button>
+                    </div>
+                    
+                    <div id="answer-display" class="answer-display hidden">
+                        <h4>参考答案：</h4>
+                        <p id="correct-answer"></p>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer>
+            <p>&copy; 2025 毛概学习系统</p>
+        </footer>
+    </div>
+
+    <script src="questions.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
