@@ -19,6 +19,7 @@ class QuizApp {
         this.userAnswer = document.getElementById('user-answer');
         this.submitBtn = document.getElementById('submit-btn');
         this.nextQuestionBtn = document.getElementById('next-question-btn');
+        this.retryQuestionBtn = document.getElementById('retry-question-btn');
         this.backBtn = document.getElementById('back-btn');
         this.answerDisplay = document.getElementById('answer-display');
         this.correctAnswer = document.getElementById('correct-answer');
@@ -50,6 +51,11 @@ class QuizApp {
         // 下一题事件
         this.nextQuestionBtn.addEventListener('click', () => {
             this.showNextQuestion();
+        });
+        
+        // 重新答题事件
+        this.retryQuestionBtn.addEventListener('click', () => {
+            this.retryCurrentQuestion();
         });
         
         // 返回按钮事件
@@ -154,6 +160,7 @@ class QuizApp {
         this.userAnswer.disabled = false;
         this.submitBtn.classList.remove('hidden');
         this.nextQuestionBtn.classList.add('hidden');
+        this.retryQuestionBtn.classList.add('hidden');
         this.answerDisplay.classList.add('hidden');
         
         // 标记题目为已使用
@@ -176,6 +183,7 @@ class QuizApp {
         this.userAnswer.disabled = true;
         this.submitBtn.classList.add('hidden');
         this.nextQuestionBtn.classList.remove('hidden');
+        this.retryQuestionBtn.classList.remove('hidden');
         
         // 滚动到答案区域
         this.answerDisplay.scrollIntoView({ behavior: 'smooth' });
@@ -183,6 +191,19 @@ class QuizApp {
     
     showNextQuestion() {
         this.showRandomQuestion();
+    }
+    
+    retryCurrentQuestion() {
+        // 重置当前题目的状态，允许用户重新答题
+        this.userAnswer.value = '';
+        this.userAnswer.disabled = false;
+        this.submitBtn.classList.remove('hidden');
+        this.nextQuestionBtn.classList.add('hidden');
+        this.retryQuestionBtn.classList.add('hidden');
+        this.answerDisplay.classList.add('hidden');
+        
+        // 聚焦到答案输入框
+        this.userAnswer.focus();
     }
     
     showAllQuestionsCompleted() {
@@ -195,6 +216,7 @@ class QuizApp {
         this.userAnswer.style.display = 'none';
         this.submitBtn.classList.add('hidden');
         this.nextQuestionBtn.classList.add('hidden');
+        this.retryQuestionBtn.classList.add('hidden');
         this.answerDisplay.classList.add('hidden');
         
         // 添加重新开始按钮
